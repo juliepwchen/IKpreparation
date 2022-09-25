@@ -118,7 +118,7 @@ class TwoArrays {
                 if (nums1[i]===nums2[j]) result.add( nums1[i] );
             }
         }
-        return result;
+        return [...result];
     }
     // T(n) = O(n log n = O(n log n) Presort + O( max(m, n))
     intersection_TwoPointerPass(nums1, nums2) {
@@ -133,7 +133,7 @@ class TwoArrays {
             else if (nums1[i] < nums2[j]) i++;
             else j++;
         }
-        return result;
+        return [...result];
     }
 }
 let ta = new TwoArrays();
@@ -149,7 +149,7 @@ console.log('Two Arrays intersection Two Pointer Pass', ta.intersection_TwoPoint
 class MeetingRooms {
     constructor() {}
 
-    // Brute Force: T(n)=O(n squared)
+    // Brute Force: T(n)=O(n^2)
     meetingRooms_BruteForce(intervals) {
         let nooverlap=true;
         for (let i=0; i< intervals.length; i++) {

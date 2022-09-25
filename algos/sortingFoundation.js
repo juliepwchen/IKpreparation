@@ -1,5 +1,5 @@
 const collections = require('pycollections');
-const MinHeap = require('./Heap');
+const { MinHeap } = require('./Heap');
 /***************************************************************************************************/
 /* Leetcode Easy: 0 problems => Medium: 1 problem => Hard: 0 problem
 /***************************************************************************************************/

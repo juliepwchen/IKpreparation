@@ -23,7 +23,7 @@
 // Leetcode #268 Easy - Missing Number
 // Given an array nums containing n distinct numbers in the range [0, n], return the only number in the range 
 // that is missing from the array. Code up using O(1) space & O(n) Time Complexity.
-// Ex: input: nums=[3, 0, 1], output: 2 , Ex: input: nums=[0, 1], output: 2, Ex: input nums=[9, 6, 4, 2, 3, 5, 7, 0], output: 8
+// Ex: input: nums=[3, 0, 1], output: 2 , Ex: input: nums=[0, 1], output: 2, Ex: input nums=[9, 1, 6, 4, 2, 3, 5, 7, 0], output: 8
 // 
 // Pigeon Hole Principle: Ex: n-size sorted array, 0, 1, 2, 3...n @ index 0, 1, 2... n-1, n is missing
 class MissingNumber {

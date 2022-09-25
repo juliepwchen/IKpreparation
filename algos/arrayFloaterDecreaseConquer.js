@@ -62,10 +62,11 @@ class WiggleSort {
     constructor() {}
 
     // T(n)=O(n), S(n)=O(1)
-    // nums[evenIndex] < nums[oddIndex]
+    // 1) nums[evenIndex] <= nums[oddIndex]
+    // 2) Top Down (mess up order as we traverse) vs. Bottom Up (keep order as we traverse)
     wiggleSort(nums) {
         let n=nums.length;
-        for (let i=n-1; i>=0; i--) {                        // Bottom Up 
+        for (let i=n-1; i>=0; i--) {                        
             if ((i %2 ===0 && nums[i] > nums[i-1]) || (i%2===1 && nums[i] < nums[i-1])) 
                 this.swap(nums, i, i-1);
         }
@@ -143,45 +144,45 @@ const fc = new FindCelebrity();
 console.log('Find Celebrity', fc.findCelebrity([[1, 1, 0], [0, 1, 0], [1, 1, 1]]));
 console.log('Find Celebrity', fc.findCelebrity([[1, 0, 1], [1, 1, 0], [0, 1, 1]]));
 
-// Leetcode #53 Easy - Maximum Subarray
+// Leetcode #53 Easy - Maximum Sum Subarray
 // Given an integer array, nums, find the contiguous subarray (contain at least one number) which
 // has the largest sum and return its sum.
 // Ex: input: nums=[-2, 1, -3, 4, -1, 2, 1, -5, 4], output: 6; Ex: input: nums=[1], output: 1; 
 // Ex: input: nums=[0], output: 0; Ex: input: nums=[-1], output: -1; Ex: input: nums=[-2147483647], output: -2147483647
 //
-// Brute Force: T(n) = n Choose 2 = O(n squred) * n = O(n cube)
-class MaximumSubarray {
+// Brute Force: T(n) = n Choose 2 = O(n^2) * n = O(n^3)
+class MaxSumSubarray {
     // Thought Process: 
     // 1) consider there will be many arrays & sums to compare with each other => so we need a global max variable
     // 2) to calculate a local sum in 1 array => we need to acculmulate sum up to that point 
     // => to calculate max sum of a subarray 
     constructor(nums) {
         this.nums = nums;
-        this.globalmax= this.nums[0];
+        this.maxsum= this.nums[0];
     }
     // assume n-1 is solved before my number
     // incorporate my number with answer return from previous subordinate & check if it overturn global max
     // T(n) = O(n)
     findMaxSum() {
-        let prevmax = this.nums[0];
+        let prefixmaxsum = this.nums[0];
         for (let i=1; i< this.nums.length; i++) {
             // local manager Work TBD: incorporating nums[i] to get answer for subproblem nums[0...i]
             // compare (nums[i] + prevmax (max subarray sum ending @ index i-1)) = max sum ending @ index i, with globalmax
-            prevmax = Math.max(prevmax + this.nums[i], this.nums[i]);            // for manager's satisfaction
-            this.globalmax = Math.max(prevmax, this.globalmax);          
+            prefixmaxsum = Math.max(prefixmaxsum + this.nums[i], this.nums[i]);            // for manager's satisfaction
+            this.maxsum = Math.max(prefixmaxsum, this.maxsum);          
         }
-        return this.globalmax;
+        return this.maxsum;
     }
 }
-const ms = new MaximumSubarray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
+const ms = new MaxSumSubarray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
 console.log('Maximum Subarray', ms.findMaxSum());
-const ms2 = new MaximumSubarray([1]);
+const ms2 = new MaxSumSubarray([1]);
 console.log('Maximum Subarray', ms2.findMaxSum());
-const ms3 = new MaximumSubarray([0]);
+const ms3 = new MaxSumSubarray([0]);
 console.log('Maximum Subarray', ms3.findMaxSum());
-const ms4 = new MaximumSubarray([-1]);
+const ms4 = new MaxSumSubarray([-1]);
 console.log('Maximum Subarray', ms4.findMaxSum());
-const ms5 = new MaximumSubarray([-2147483647]);
+const ms5 = new MaxSumSubarray([-2147483647]);
 console.log('Maximum Subarray', ms5.findMaxSum());
 
 // Leetcode #121 Easy - Best Time to Buy and Sell Stock
@@ -192,7 +193,7 @@ console.log('Maximum Subarray', ms5.findMaxSum());
 class MaxProfit {
     constructor(stocks) {
         this.stocks = stocks;
-        this.globalMaxProfit=0;
+        this.maxprofit=0;
     }
     // T(n) = O(n), S(n)=O(1)
     // assume n-1 problem is solved => now I need to extend the solution to size of n
@@ -201,18 +202,31 @@ class MaxProfit {
     // my element needs to be a sell price => keep track of buy price => buy price needs to be smallest
     // global maximum profit => largest difference between the smallest buy number & largest sell number
     findMaxProfit() {
-        let premin = this.stocks[0];
+        let minbuy=this.stocks[0];
         for (let i=1; i< this.stocks.length; i++) {
-            premin = Math.min(premin, this.stocks[i]);                                 // O(1)
-            this.globalMaxProfit = Math.max(this.stocks[i]-premin, this.globalMaxProfit);
+            minbuy = Math.min(minbuy, this.stocks[i]);                                 // O(1)
+            this.maxprofit = Math.max(this.stocks[i] - minbuy, this.maxprofit);
         }
-        return this.globalMaxProfit;
+        return this.maxprofit;
+    }
+    // Brute Force: O(n^2)
+    findMaxProfit_BruteForce() {
+        let profit=0;   
+        for (let i=1; i< this.stocks.length; i++) {
+            for (let j=i+1; j<this.stocks.length; j++) {
+                profit = this.stocks[j] - this.stocks[i];
+                if (profit >0) this.maxprofit = Math.max(this.maxprofit, profit);
+            }
+        }
+        return this.maxprofit;
     }
 }
 const mp = new MaxProfit([7, 1, 5, 3, 6, 4]);
 console.log('Maximum Profit', mp.findMaxProfit());
+console.log('Maximum Profit Brute Force', mp.findMaxProfit_BruteForce());
 const mp2 = new MaxProfit( [7, 6, 4, 3, 1]);
 console.log('Maximum Profit', mp2.findMaxProfit())
+console.log('Maximum Profit Brute Force', mp2.findMaxProfit_BruteForce());
 
 // Leetcode #221 Medium - Maximal Square
 // Given an m x n binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.

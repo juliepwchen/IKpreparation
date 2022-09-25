@@ -1,4 +1,5 @@
-import { Node, BSTree } from './treeFoundation.js';
+const { Node, BSTree } = require('./treeFoundation.js');
+//import { Node, BSTree } from './treeFoundation.js';
 
 /***************************************************************************************************/
 /* Leetcode Easy: 5 problems => Medium: 13 problems => Hard: 1 problem
