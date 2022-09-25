@@ -305,7 +305,7 @@ const ks = new KnapsackNchooseK();
 console.log('Knapsack N choose K, return unique subsets of a len k from a set of len n', ks.overall(4, 2));
 
 // LeetCocde #40 Medium - Knapsack (Backtracking Case) - Combinations Sum II 
-// Given a collection of candidate numbers (candidates) and a target numbeer (target),
+// Given a collection of candidate numbers (candidates) and a target number (target),
 // find all unique combinations in candidates where candidate numbers sums up to target.
 // Eech number in candidates may only be used once in the combination.
 // Note: all numbers (include target) >=0

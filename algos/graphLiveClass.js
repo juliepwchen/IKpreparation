@@ -762,7 +762,6 @@ class FlighItinerary {
 const ait = new FlighItinerary([ ['MUC', 'LHR'], ['CDG', 'MUC'], ['SFO', 'SJC'], ['LHR', 'SFO'] ]);
 console.log('Flight Itinerary', ait.outerloop());
 
-
 // Leetcode #1192 Hard - Critial Connections in a Network
 // There are n servers numbered from 0 to n-1 connected by undirected server-to-servers connections
 // forming a network where connections[i] = [a, b], representing a connection between a and b.
