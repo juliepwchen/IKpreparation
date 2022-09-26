@@ -158,51 +158,140 @@ console.log('Subarray Sum Equals to K', ssek.subarraySum([1, 2, 3], 3));
 // Given an array, A, of integers, return the numbers (contiguous, non-empty) subarrays that
 // have a sum divisible by k.
 // Ex: input: A=[4, 5, 0, -2, -3, 1], K=5, output: 7
-// Ex: [4, 5, 0, -2, -3, 1], [5], [5, 0], [5, 0, -2, -3], [0], [0, -2. -3], [-2, -3]
+// Explain: [4, 5, 0, -2, -3, 1], [5], [5, 0], [5, 0, -2, -3], [0], [0, -2. -3], [-2, -3]
+//
 // Goal: do this problem Linear Time: O(n) 
 // Decrease & Conquer: # of subarrays have a sum divisble by k [ending at index i] => total i+1 subarrays
 // - if we check every subarray (total i+1) ending @ each index i, T(n)=O(n^2) 
 // Q: how many Red subfix are divisible by K? 
 // 
 // T(n)=O(n), S(k)=O(k) for hmap, hmap has entries upto index i-1
-class SubarrayDivisible {
+class SubarrayDivisibleByK {
     constructor() {}
 
-    subarrayDivisible(nums, k) {
-        // hmap: key=prefixsum % k, value=count
+    subarrayDivisibleByK(nums, k) {
+        let hmap={ 0:1 }, prefixsum=0, count=0;
+        for (let i=0; i<nums.length; i++) {
+            prefixsum = (prefixsum + nums[i]) % k;
+            if (prefixsum < 0) prefixsum += k;
+            if (hmap[prefixsum]) count += hmap[prefixsum];
+
+            if (hmap[prefixsum]) hmap[prefixsum]++;
+            else hmap[prefixsum] =1;
+        }
+        return count;
     }
 }
+const sdk = new SubarrayDivisibleByK();
+console.log('Subarray Sum Divisible to K', sdk.subarrayDivisibleByK([4, 5, 0, -2, -3, 1], 5));
 
 // Leetcode #325 Medium - Maximum Size Subarray Sum Equals K
 // Given an array, nums, and a target value k, find the maximum length of a subarray that sums up to k.
 // If there is none, return 0.
-// Ex: input: [1, -1, 5, -2, 3], k=3, output: 4, Ex: [1, -1, 5, -2] sums to 3 is longest array.
-// Ex: input: [-2, -1, 2, 1], k=1, output: 2, Ex: [-1, 2] sums upto 1 is longest array.
+// Ex: input: [1, -1, 5, -2, 3], k=3, output: 4, Explain: [1, -1, 5, -2] sums to 3 is longest array.
+// Ex: input: [-2, -1, 2, 1], k=1, output: 2, Explain: [-1, 2] sums upto 1 is longest array.
 //
 // Optimization problem: T(n)=O(n), S(n)=O(n)
 class MaxSizeSubarray {
+    constructor() {}
     // hmap: key=prefixsum, value=shortest length of subarray with sum adds upto (prefixsum-k)
     // (i+1) - hmap[prefixsum-k] = longest length subarray sums upto k
+    maxSizeSubarray(nums, k) {
+        let hmap={ 0:0 }, prefixsum=0, max=0;
+        for (let i=0; i<nums.length; i++) {
+            prefixsum += nums[i];
+            if (hmap[prefixsum-k] !== undefined) max = Math.max(max, (i+1)-hmap[prefixsum-k]);
+
+            if (hmap[prefixsum]===undefined) hmap[prefixsum]=i+1;
+        }
+        return max;
+    }
 }
+const mss = new MaxSizeSubarray();
+console.log('Max Size Subarray Sum Equals to K', mss.maxSizeSubarray([1, -1, 5, -2, 3], 3));
+console.log('Max Size Subarray Sum Equals to K', mss.maxSizeSubarray([-2, -1, 2, 1], 1));
 
 // Leetcode #1524 Medium - Number of Subarray with Odd Sum
 // Given an array of integers, nums, return the number of subarrays with Odd Sum.
 // As the number grows, the number needs to computed modulo 10^9+7 => % 1000000007
-// Ex: input: [1, 3, 5], output: 4, Ex: all-subarrays: [[1], [1, 3], [1, 3, 5], [3], [3, 5], [5]], sums: [1, 4, 9, 3, 8, 5], odd-sums:4
-// Ex: input: [2, 4, 6], output: 0, Ex: all-subarrays: [[2], [2, 4], [2, 4, 6], [4], [4, 6], [6]], sums: [2, 6, 12, 4, 10, 6], odd-sums:0
+// Ex: input: [1, 3, 5], output: 4, Explain: all-subarrays: [[1], [1, 3], [1, 3, 5], [3], [3, 5], [5]], sums: [1, 4, 9, 3, 8, 5], odd-sums:4
+// Ex: input: [2, 4, 6], output: 0, Explan: all-subarrays: [[2], [2, 4], [2, 4, 6], [4], [4, 6], [6]], sums: [2, 6, 12, 4, 10, 6], odd-sums:0
 // Ex: input: [1, 2, 3, 4, 5, 6, 7], output: 16
 // Ex: input: [100, 100, 99, 99], output: 4
 // Ex: input: [7], output: 1
 //
 // Counting problem vs. Optimization problem => we are not always storing Prefixsum in Hmap => store count, "even/odd" count, etc.
 // T(n)=O(n), (constant space) S(2)= 2 values in hmap or 2 variables
+class OddSumSubarrays {
+    constructor() {}
 
+    oddSumSubarrays(nums) {
+        let hmap={ "even": 1, "odd":0 }, prefixsum=0, count=0;
+        for (let i=0; i<nums.length; i++) {
+            prefixsum += nums[i];
+            if (prefixsum % 2 === 0) count += hmap["odd"];  // when p=even, prefix needs to odd for total sum to be odd
+            else count += hmap["even"];                     // when p=odd, prefix needs to even for total sum to be odd
+
+            if (prefixsum % 2 === 0) hmap["even"]++;
+            else hmap["odd"]++;
+        }
+        return count;
+    }
+}
+const oss = new OddSumSubarrays();
+console.log('Number of Subarray Odd Sum ', oss.oddSumSubarrays([1, 3, 5]));
+console.log('Number of Subarray Odd Sum ', oss.oddSumSubarrays([2, 4, 6]));
+console.log('Number of Subarray Odd Sum ', oss.oddSumSubarrays([1, 2, 3, 4, 5, 6, 7]));
+console.log('Number of Subarray Odd Sum ', oss.oddSumSubarrays([100, 100, 99, 99]));
+console.log('Number of Subarray Odd Sum ', oss.oddSumSubarrays([7]));
 
 // Leetcode #525 Medium - Contiguous Array
-// Given a binary array, find the maximum length of a 
+// Given a binary array, find the maximum length of a continguous subarray with equal number of 0 andd 1.
+// Ex: input:[0, 1], output: 2, explain: [0, 1]
+// Ex: input:[0, 1, 0], output: 2, explain: [1, 0] OR [0, 1]
+class MaxSizeContinugousSubarray {
+    constructor() {}
 
+    maxContiguousBinary(nums) {
+        let hmap={ 0:0 }, prefixexcess=0, max=0;
+        for (let i=0; i< nums.length; i++) {
+            if (nums[i]===1) prefixexcess++;
+            else prefixexcess--;
+            if (hmap[prefixexcess] !== undefined) max = Math.max(max, (i+1)-hmap[prefixexcess]);
+
+            if (hmap[prefixexcess]===undefined) hmap[prefixexcess] = i+1;
+        }
+        return max;
+    }
+}
+const mscs = new MaxSizeContinugousSubarray();
+console.log('Longest Length of Subarray with Equal 0 and 1 = ', mscs.maxContiguousBinary([0, 1, 0]));
+console.log('Longest Length of Subarray with Equal 0 and 1 = ', mscs.maxContiguousBinary([0, 1]));
 
 // Leetcode #523 Medium - Contiguous SubArray Sum
-// Given a list of non-negative numbers and a target ...
+// Given a list of non-negative numbers and a target integer k, write a function to check if the array has a
+// continguous subarray of size at least 2 that sums up to a multiple of k, that is, sums up to n*k where n
+// is also an integer.
+// Ex: input: [23, 2, 4, 6, 7], k=6, output: True, explain: [2, 4] sums up to 6 & size of 2
+// Ex: input: [23, 2, 6, 4, 7], k=6, output: True, explain: [23, 2, 6, 4, 7] sums up to 42 & size of 5
 //
-// @ index i, add prefixsum @ index i-1 in hmap???
+// 1) Decision Problem 2) 2+ Size 3) Divisible by K - @ index i, add prefixsum @ index i-1 in hmap
+class SubarrayDivisibleByK_II {
+    constructor() {}
+
+    divisibleByK(nums, k) {
+        let hmap={ 0: true }, prefixsum=nums[0];
+        for (let i=1; i<nums.length; i++) {
+            let prefixsum_old = prefixsum;
+            prefixsum = (prefixsum_old + nums[i]) % k;
+            if (prefixsum <0) prefixsum += k;
+
+            if (hmap[prefixsum]) return true;
+            else hmap[prefixsum_old]=true;
+        }
+        return false;
+    }
+}
+const sdkII = new SubarrayDivisibleByK_II();
+console.log('Subarray Sum Divisible to K', sdkII.divisibleByK([23, 2, 4, 6, 7], 6));
+console.log('Subarray Sum Divisible to K', sdkII.divisibleByK([23, 2, 6, 4, 7], 6));
