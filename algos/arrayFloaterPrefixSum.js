@@ -173,7 +173,7 @@ class SubarrayDivisibleByK {
         let hmap={ 0:1 }, prefixsum=0, count=0;
         for (let i=0; i<nums.length; i++) {
             prefixsum = (prefixsum + nums[i]) % k;
-            if (prefixsum < 0) prefixsum += k;
+            while (prefixsum < 0) prefixsum += k;
             if (hmap[prefixsum]) count += hmap[prefixsum];
 
             if (hmap[prefixsum]) hmap[prefixsum]++;
