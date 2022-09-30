@@ -1,6 +1,6 @@
 const { Node, BSTree } = require('../algos/treeFoundation');
 /***************************************************************************************************/
-/* Krishna Kondaka (Meta)
+/* Krishna Kondaka (ex-Meta) - Amazon
 /***************************************************************************************************/
 /* PART I 
     Write a function that returns whether a list of strings is sorted given a specific alphabet.
