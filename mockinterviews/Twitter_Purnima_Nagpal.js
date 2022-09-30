@@ -22,9 +22,6 @@
 //              3   7
 //  
 //  Output: 7
-
-const { timeStamp } = require("console");
-
 //
 class TreeNode {    
     constructor(key, left, right){         
