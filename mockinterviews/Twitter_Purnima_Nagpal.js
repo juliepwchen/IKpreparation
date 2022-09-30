@@ -1,4 +1,4 @@
-// Twitter Mock Interview - Purnima Nagpal 
+// Purnima Nagpal - Twitter
 //
 // PART I: 
 // Binary Tree Right Side View 
