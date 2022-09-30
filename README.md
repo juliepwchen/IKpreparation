@@ -11,7 +11,7 @@ As of 09/30/2022, I have added 9 more LC problem from Mr. Omkar's Array Floater 
 
 As of 09/30/2022, I have also added /mockinterviews folder where I upload questionnaire from IK Mockinterviewers who are current or ex FAANG engineers.  I found it helpfult to share this information with Peers to dismistify the Mock Interview experience.  Each Mock Interviewer has his/her individual temperament of conducting their interviews, similer to the real-world experience. IK may help to predicting the type of questionnaire using certain problem-solving strategies and patterns, but we cannot expect anyone to predict human personalities and bias.  Just try our best in this process and don't be too hard on ourselvies. 
 
-## Toal LC problem count
+## Total LC problem count
 
 (09/30/22) => 72
 - Easy: 3+2+1+1+5+5 (09/09/22) +2 (09/30)
