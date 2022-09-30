@@ -9,7 +9,7 @@ As of 09/30/2022, I have added 9 more LC problem from Mr. Omkar's Array Floater 
 
 ## Algorithms & DS- /mockinterviews
 
-As of 09/30/2022, I have also added /mockinterviews folder where I upload questionnaire from IK Mockinterviewers who are current or ex FAANG engineers.  I found it helpfult to share this information with Peers to dismistify the Mock Interview experience.  Each Mock Interviewer has his/her individual style of conducting their interviews, similer to the real-world experience. We can try predicting the type of questionnaire, but we cannot predict human personalities.  Just try our best in this process and don't be too hard on ourselvies. 
+As of 09/30/2022, I have also added /mockinterviews folder where I upload questionnaire from IK Mockinterviewers who are current or ex FAANG engineers.  I found it helpfult to share this information with Peers to dismistify the Mock Interview experience.  Each Mock Interviewer has his/her individual temperament of conducting their interviews, similer to the real-world experience. IK may help to predicting the type of questionnaire, but we cannot expect anhone to redict human personalities.  Just try our best in this process and don't be too hard on ourselvies. 
 
 ## Toal LC problem count
 
