@@ -245,6 +245,12 @@ console.log('Maximum Profit Brute Force', mp2.findMaxProfit_BruteForce());
 //
 // input: [["0"]], output: 0
 //
+// Thought Process:
+// 1) find local largest square containing 1 & store in table[r][c] => this means my cell (matrix[r][c]) needds to 1 to be valid
+// 2) 1st row & 1 column are the bases cases => populate table[r][0] & table[0][c] with 0 or 1 from matrix[r][0] & matrix[0][1]
+// 3) initialize global max square to be 1 if matrix[r][0] or matrix[0][c] is 1
+// 4) Only when my cell is 1, local max square, table[r][c] = 1 + max square from my subordinates
+// 5) Once I found the local max square in table[r][c], compare it with global max to return a square.
 class MaximalSquare {
     constructor(matrix) {
         this.matrix=matrix;
@@ -268,9 +274,9 @@ class MaximalSquare {
     }
     // General Manager: I'm the cell @ right most bottom corner
     // => need to consider the squares above, adjacent & diagonal to my squares
-    // => 1) maxsquare size increases only when my cell is a 1 
-    // => 2) populate table with local maximum square compare to my subordinates
-    // => 3) compare my local max square value with global max square value
+    // 1) maxsquare size increases only when my cell is a 1 
+    // 2) populate table with local maximum square compare to my subordinates
+    // 3) compare my local max square value with global max square value
     findMaximalSquare() {
         for (let r=1; r<this.matrix.length; r++) {
             for (let c=1; c<this.matrix[0].length; c++) {
