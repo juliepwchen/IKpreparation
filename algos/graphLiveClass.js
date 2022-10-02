@@ -576,11 +576,10 @@ class CourseScheduleI {
         this.visited[vertex]=1;
         this.arrivals[vertex]=this.timestamp++;
         for (let neighbor of this.adjList[vertex]) {
-            if (this.visited[neighbor]===-1) {
-                this.visited[neighbor]=1;
+            if (this.visited[neighbor]===-1) {                      // Tree Edge: neighbor has not been visited
                 if (this.helper(neighbor)) return true;
-            } else {
-                if (this.departures[neighbor]===-1) return true;    //Back Edge: departure time not set => a Cycle
+            } else {                                                // neighbor is already visited
+                if (this.departures[neighbor]===-1) return true;    // Only Back Edge forms a Cycle: departure time not set
             }
         }
         this.departures[vertex]=this.timestamp++;
@@ -597,6 +596,8 @@ class CourseScheduleI {
         return true;     
     }                                                              // Can graduate => Cycle not found
 }
+const cs2 = new CourseScheduleI(2, [[1, 0]]);
+console.log('Can you graudate?', cs2.outerloop());
 const cs = new CourseScheduleI(2, [[1,0], [0,1]]);
 console.log('Can you graudate?', cs.outerloop());
 
@@ -634,7 +635,6 @@ class CourseSchedue_TopologicalSort {
         this.arrivals[vertex] = this.timestamp++;
         for (let neighbor of this.adjList[vertex]) {
             if (this.visited(neighbor)===-1) {
-                this.visited(neighbor)=1;
                 if (this.helper(neighbor)) return true;
             } else {
                 if (this.departures[neighbor]===-1) return true;
@@ -658,7 +658,7 @@ const csII = new CourseSchedue_TopologicalSort(4, [[1, 0], [2, 0], [3, 1], [3, 2
 console.log('Course Schedule Topological Sort', csII.outerloop());
 
 // Kahn Algorithmm for Topological Sort (Course Schedule II)
-// 1) Build the Graph 2) Find in-degree of each node 
+// 1) Build the Graph 2) Find in-degree (node <- other node) of each node (vs. out-desgree: node -> other node)
 // 3) Identify which node has zero in-degree & put them in a bag 4) process the bag
 // 
 // T(n) = O(m+n)
