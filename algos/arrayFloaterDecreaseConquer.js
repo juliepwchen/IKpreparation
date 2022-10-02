@@ -230,48 +230,57 @@ console.log('Maximum Profit Brute Force', mp2.findMaxProfit_BruteForce());
 
 // Leetcode #221 Medium - Maximal Square
 // Given an m x n binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.
-// Ex: input: [["1", "0", "1", "0", "0"], ["1", "0", "1", "1", "1"], ["1", "1", "1", "1", "1"], ["1", "0", "0", "1", "0"]], output: 4
-// Ex: input: [["0", "1"], ["1", "0"]], output: 1; input: [["0"]], output: 0
+// Ex: input: 
+// [
+//    ["1", "0", "1", "0", "0"], 
+//    ["1", "0", "1", "1", "1"], 
+//    ["1", "1", "1", "1", "1"],
+//    ["1", "0", "0", "1", "0"]
+// ], output: 4
+// Ex: input: 
+// [
+//    ["0", "1"], 
+//    ["1", "0"]
+// ], output: 1; 
+//
+// input: [["0"]], output: 0
+//
 class MaximalSquare {
     constructor(matrix) {
-        this.matrix = matrix;
-        this.globalmax = 0;
+        this.matrix=matrix;
+        this.table=Array(this.matrix.length).fill().map(()=>Array(this.matrix[0].length));
+        this.maxsquare=0;
+         
+        // Base case: start the right most bottom corner @ 1st row/ 1st column 
+        // = maximun square size since there is no squares above, adjacent or diagonal
+        for (let r=0; r< this.matrix.length; r++) {
+            if (this.matrix[r][0]==='1') {
+                this.table[r][0]=1;
+                this.maxsquare=1;
+            } else this.table[r][0]=0;
+        }
+        for (let c=0; c< this.matrix[0].length; c++) {
+            if (this.matrix[0][c] === '1') {
+                this.table[0][c]=1;
+                this.maxsquare=1;
+            } else this.table[0][c]=0;
+        }
     }
-
-    // General Manager: I'm the cell @ right most bottom corner => need to consider the squares above, adjacent & diagonal to my squares
-    // 
+    // General Manager: I'm the cell @ right most bottom corner
+    // => need to consider the squares above, adjacent & diagonal to my squares
+    // => 1) maxsquare size increases only when my cell is a 1 
+    // => 2) populate table with local maximum square compare to my subordinates
+    // => 3) compare my local max square value with global max square value
     findMaximalSquare() {
-        let m=this.matrix.length, n=this.matrix[0].length;
-        let table=Array(m).fill().map(()=>[]);                  // construct a table of m x n
-        
-        // Base case
-        // start the right most bottom corner @ 1st row/ 1st column = maximun square size since there is no squares above, adjacent or diagonal
-        for (let col=0; col<n; col++) {                         // fill 1st row
-            if (this.matrix[0][col]==='1') {
-                table[0][col]=1;
-                this.globalmax=1;
-            }
-            else table[0][col]=0;
-        }
-        for (let row=0; row<m; row++) {                         // fill 1st column
-            if (this.matrix[row][0]==='1') {
-                table[row][0]=1;
-                this.globalmax=1;
-            }
-            else table[row][0]=0;
-        }
-        // T(n)=O(n squared) - an improvement from exponential time complexity
-        // table[row][col] = n = size of square side n * n
-        for (let row=1; row<m; row++) {
-            for (let col=1; col<n; col++) {
-                if (this.matrix[row][col]==='1') {
-                    table[row][col]= 1+ Math.min(table[row][col-1], table[row-1][col-1], table[row-1][col]);
-                    this.globalmax= Math.max(this.globalmax, table[row][col]);
-                }
-                else table[row][col]=0;
+        for (let r=1; r<this.matrix.length; r++) {
+            for (let c=1; c<this.matrix[0].length; c++) {
+                if (this.matrix[r][c]==='1') {
+                    this.table[r][c] = 1+ Math.min(this.table[r][c-1], this.table[r-1][c-1], this.table[r-1][c]);
+                    this.maxsquare=Math.max(this.maxsquare, this.table[r][c]);
+                } else this.table[r][c]=0;
             }
         }
-        return this.globalmax * this.globalmax;
+        return this.maxsquare * this.maxsquare;
     }
 }
 const fms = new MaximalSquare([["1", "0", "1", "0", "0"], ["1", "0", "1", "1", "1"], ["1", "1", "1", "1", "1"], ["1", "0", "0", "1", "0"]]);
