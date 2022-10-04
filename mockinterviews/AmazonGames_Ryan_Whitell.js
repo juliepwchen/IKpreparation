@@ -78,10 +78,12 @@ class AmazonCatelog_Kahn {
     }
     buildGraph() {
         for (let [dest, prereq] of this.catelog) {
-            this.indegree[dest]=0;                                  // initialize in-degrees to zero for all dest
+            if (!this.indegree[dest]) this.indegree[dest]=0;        // initialize in-degrees to zero for all dest
             if (!this.adjList[dest]) this.adjList[dest]=[];         // initialize all dest with empty array   
 
             for (let src of prereq) {
+                if (!this.indegree[src]) this.indegree[src]=0;      // initialize in-degrees to zero for all src
+                
                 if (this.adjList[src]) this.adjList[src].push(dest);
                 else this.adjList[src] = [dest];
 
@@ -102,8 +104,7 @@ class AmazonCatelog_Kahn {
             let vertex = this.bag.shift();
             this.topsort.push(vertex);
           
-            let neighbors = this.adjList[vertex];
-            for (let neighbor of neighbors) {
+            for (let neighbor of this.adjList[vertex]) {
                 this.indegree[neighbor]--;
                 if (this.indegree[neighbor]===0) this.bag.push(neighbor);
             }

@@ -762,6 +762,54 @@ class FlighItinerary {
 const ait = new FlighItinerary([ ['MUC', 'LHR'], ['CDG', 'MUC'], ['SFO', 'SJC'], ['LHR', 'SFO'] ]);
 console.log('Flight Itinerary', ait.outerloop());
 
+// Google problem - Flight Itinerary Problem
+// Using Kahn's Algorithm
+class FlightItinerary_Kahn {
+    constructor(tickets) {
+        this.tickets=tickets;
+        this.adjList={};
+        this.indegrees ={};
+        this.topsort=[];
+        this.bag=[];
+    }
+    buildGraph() {
+        for (let [from, to] of this.tickets) {
+            if (!this.indegrees[from]) this.indegrees[from]=0;
+            if (!this.indegrees[to]) this.indegrees[to]=0;
+            if (!this.adjList[to]) this.adjList[to]=[];
+
+            if (this.adjList[from]) this.adjList[from].push(to);    // Ex: MUC->LHR, CDG->MUC, SFO->SJC, LHR->SFO
+            else this.adjList[from]=[to];
+            
+            this.indegrees[to]++;                                   // Ex: indegree { MUC: 1, LHR:1, SJC:1, SFO:1, CDG:0 }
+        }
+    }
+    zeroInDegreeBag() {
+        for (let flight in this.indegrees) {
+            if (this.indegrees[flight]===0) this.bag.push(flight);
+        }    
+    }
+    processBag() {
+        this.buildGraph();
+        this.zeroInDegreeBag();
+
+        while (this.bag.length >0) {
+            let vertex = this.bag.shift();
+            this.topsort.push(vertex);
+
+            for (let neightbor of this.adjList[vertex]) {
+                this.indegrees[neightbor]--;
+                if (this.indegrees[neightbor]===0) this.bag.push(neightbor);
+            }
+        }
+
+        if (this.topsort.length < this.tickets.length) return [];
+        return this.topsort;
+    }
+}
+const aitk = new FlightItinerary_Kahn([ ['MUC', 'LHR'], ['CDG', 'MUC'], ['SFO', 'SJC'], ['LHR', 'SFO'] ]);
+console.log('Flight Itinerary', aitk.processBag());
+
 // Leetcode #1192 Hard - Critial Connections in a Network
 // There are n servers numbered from 0 to n-1 connected by undirected server-to-servers connections
 // forming a network where connections[i] = [a, b], representing a connection between a and b.
