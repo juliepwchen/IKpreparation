@@ -720,11 +720,12 @@ class FlighItinerary {
     // Ex: {'MUC': ['LHR'], 'CDG': ['MUC'], 'SFO': ['SJC'], 'LHR': ['SFO']}
     buildGraph() {
         for (let [from, to] of this.edges) {
-            if (this.adjList[from]) {
-                this.adjList[from].push(to);
-            } else this.adjList[from] = [ to ];
             this.visited[from]=-1;
             this.visited[to]=-1;
+            if (!this.adjList[to]) this.adjList[to]=[];
+
+            if (this.adjList[from]) this.adjList[from].push(to);
+            else this.adjList[from] = [ to ];
         }
     }
     dfs(source) {   
@@ -733,19 +734,18 @@ class FlighItinerary {
     helper(vertex) {
         this.visited[vertex]=1;
         this.arrivals=this.timestamp++;
-        let neighbors = this.adjList[vertex];
-        if (neighbors) {
-            for (let neighbor of neighbors) {
-                if (this.visited[neighbor]===-1) {
-                    this.visited[neighbor]=1;
-                    if (this.helper(neighbor)) return true;
-                } else {
-                    if (this.departures[neighbor]===-1) return true;   // Back Edge Found => Cycle Found 
-                }
+
+        for (let neighbor of this.adjList[vertex]) {
+            if (this.visited[neighbor]===-1) {
+                this.visited[neighbor]=1;
+                if (this.helper(neighbor)) return true;
+            } else {
+                if (this.departures[neighbor]===-1) return true;   // Back Edge Found => Cycle Found 
             }
         }
         this.departures=this.timestamp++;
         this.topsort.push(vertex);
+        
         return false;
     }
     outerloop() {
