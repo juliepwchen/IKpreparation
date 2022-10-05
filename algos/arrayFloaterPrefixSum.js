@@ -14,6 +14,7 @@ class RunningSum_OneDArray {
     // Brute Force: T(n)=O(n)
     runningSum(nums) {
         let prefixsums = [], prefixsum=0;
+        // 0 => i=0, prefixsums=[1] => i=1, [1, 1+2] = [1, 3] => i=2, [1, 3, 3+3]=[1, 3, 6] => i=3, [1, 3, 6, 4+6]=[1, 3, 6, 10]
         for (let i=0; i< nums.length; i++) {
             prefixsum += nums[i];
             prefixsums.push(prefixsum);
@@ -78,29 +79,34 @@ class RangSumeQuery_2D {
         if (matrix.length===0) { this.prefixsums=[]; return; }     //empty matrix
 
         this.prefixsums = Array(matrix.length).fill().map(()=>Array(matrix[0].length));
+        // Build Prefixsums 1st column & 1st row
+        // [3, 3,  4, 8, 10], 
+        // [8,  ,   ,  ,   ],
+        // [9,  ,   ,  ,   ],
+        // [13, ,   ,  ,   ],
+        // [14, ,   ,  ,   ]
         this.prefixsums[0][0]=matrix[0][0];
-
-        // Pre-Processing
-        for (let row=1; row<matrix.length; row++) {                 // populate leftmost column
-            this.prefixsums[row][0] = this.prefixsums[row-1][0] + matrix[row][0];
-        }
-        for (let col=1; col<matrix[0].length; col++) {             // populate topmost row
-            this.prefixsums[0][col] = this.prefixsums[0][col-1] + matrix[0][col];
-        }
-
+        for (let row=1; row<matrix.length; row++) this.prefixsums[row][0] = this.prefixsums[row-1][0] + matrix[row][0];
+        for (let col=1; col<matrix[0].length; col++) this.prefixsums[0][col] = this.prefixsums[0][col-1] + matrix[0][col];
+        // Build Prefixsums 
+        //[ 3, 3, 4, 8, 10 ],
+        //[ 8, 14, 18, 24, 27 ],
+        //[ 9, 17, 21, 28, 36 ],
+        //[ 13, 22, 26, 34, 49 ],
+        //[ 14, 23, 30, 38, 58 ] 
         for (let row=1; row< matrix.length; row++) {
             for (let col=1; col<matrix[0].length; col++) {
                 this.prefixsums[row][col] = matrix[row][col] + this.prefixsums[row][col-1] + this.prefixsums[row-1][col] - this.prefixsums[row-1][col-1];
             }
-        }  // Complete Pre-Processing
+        }
     }
     // T(n)=O(1), S(m, n)=O(m * n)
     sumRange(row1, col1, row2, col2) {
         if (this.prefixsums.length===0) return 0;            //matrix is empty
 
         if (row1===0 && col1===0) return this.prefixsums[row2][col2];
-        else if (row1===0) return this.prefixsums[row2][col2]- this.prefixsums[row2][col1-1];
-        else if (col1===0) return this.prefixsums[row2][col2]- this.prefixsums[row1-1][col2];
+        else if (row1===0) return this.prefixsums[row2][col2]- this.prefixsums[row2][col1-1]; // vertical bar
+        else if (col1===0) return this.prefixsums[row2][col2]- this.prefixsums[row1-1][col2]; // horizontal bar
 
         return this.prefixsums[row2][col2]-this.prefixsums[row2][col1-1]-this.prefixsums[row1-1][col2]+this.prefixsums[row1-1][col1-1];
     }
@@ -140,6 +146,10 @@ class SubarrySumEqualsK {
     // (LC53) ask for prefixmaxsum @ index i vs. (LC 560) need prefixsum = k - nums[i] up to index i-1 (subordinate answer) 
     subarraySum(nums, k) {
         let hmap={ 0:1 }, count=0, prefixsum=0;               // hmap: key=prefixsum, value=count
+        // { 0:1 }
+        // i=0, prefixsum=1, 1-k = -1, hmap[1]=1, { 0:1, 1:1 }, totalcount=0
+        // i=1, prefixsum=2, 2-2 =0, hmap[2]=1, { 0:1, 1:1, 2:1 }, totalcount=1
+        // i=2, prefixsum=3, 3-2=1, hmap[3]=1, {0:1, 1:1, 2:1, 3:1 }, totalcount=1+1=2
         for (let i=0; i < nums.length; i++) {                       
             prefixsum += nums[i];                             // prefixsum[i] = k (prefixsum from subordinate @ i-1 + nums[i])                                
             if (hmap[prefixsum-k]) count += hmap[prefixsum-k];// prefixsum[i]-k= prefix [0...size j-1]
@@ -173,7 +183,9 @@ class SubarrayDivisibleByK {
         let hmap={ 0:1 }, prefixsum=0, count=0;
         for (let i=0; i<nums.length; i++) {
             prefixsum = (prefixsum + nums[i]) % k;
+
             while (prefixsum < 0) prefixsum += k;
+
             if (hmap[prefixsum]) count += hmap[prefixsum];
 
             if (hmap[prefixsum]) hmap[prefixsum]++;
