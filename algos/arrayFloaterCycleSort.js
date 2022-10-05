@@ -195,7 +195,7 @@ class FindAllDuplicates {
         for (let i=0; i< n; i++) {
             if (nums[i] !== i+1) set.add(nums[i]);     
         }
-        return set;
+        return [...set];
     }
     swap(arr, x, y) {
         let temp=arr[x];
