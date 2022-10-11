@@ -500,11 +500,14 @@ class PermuteNQueenOnNxNBoard {
 const pn = new PermuteNQueenOnNxNBoard();
 console.log('N-Queens Puzzle: all distinct solution ', pn.overall(8) );
 
-// Leetcode #131 Medium - Palindrome Partitioning
+// Leetcode #131 Medium - Palindrome Partitioning (Palindromic Decomposition Of A String)
 // Given a string s, partition s such that every substring of that partition is a palindrome.
 // return all possible palindrome partitioning of s. (palindrome = a word read the same forward & backwards)
-// Ex: Input: "aab"
-// output: [ ["aa", "b"], ["a", "a", "b"] ] or [ 'a|a|b', 'aa|b' ] where '|' is the Partition Symbol.
+// => Find all palindromic decompositions of a given string s. A palindromic decomposition of string is a decomposition of 
+// => the string into substrings, such that all those substrings are valid palindromes.
+// 
+// Ex: input: "aab", output: [ ["aa", "b"], ["a", "a", "b"] ] or [ 'a|a|b', 'aa|b' ] where '|' is the Partition Symbol.
+// Ex: intpu: "abracadabra", output: ["a|b|r|a|c|ada|b|r|a", "a|b|r|aca|d|a|b|r|a", "a|b|r|a|c|a|d|a|b|r|a"]
 //
 // hint: "aab" of length n => a _ a_ b = n-1 blanks with 2 Choices each blank: join characters or "|" add partition symbol.
 // hint: permutation of string of len n => order matters

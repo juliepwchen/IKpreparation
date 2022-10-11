@@ -12,7 +12,7 @@ class TwoSum_UnSorted {
     constructor() {}
 
     // Brute Force - return indices
-    // T(n) = O(n squared), S(n)=O(1)
+    // T(n) = O(n^2), S(n)=O(1)
     // Only Brute Force returns correct indices in an unsorted input array. Sorting messes up order.
     twoSum_BruteForceForIndices(nums, target) {
         let result=[];
@@ -24,7 +24,7 @@ class TwoSum_UnSorted {
         return result;
     }
     // Brute Force - return True or False
-    // T(n) = O(n squared), S(n)= O(1) - T(n) = n-1 + n-2 + n-2 + ... + 1 = n(n-1) / 2 (arithmetic series)
+    // T(n) = O(n^2), S(n)= O(1) - T(n) = n-1 + n-2 + n-2 + ... + 1 = n(n-1) / 2 (arithmetic series)
     twoSum_BruteForceForDecision(nums, target) {
         for (let i=0; i< nums.length; i++) {
             for (let j=i+1; j<nums.length; j++) {
@@ -38,7 +38,7 @@ class TwoSum_UnSorted {
     // S(n) = input + output + Aux space + callstack if recursive
 
     // Decrease * Conquer does not help with Time Complexity.
-    // T(n) = = O(n squared) => O(n) + T(n-1) = O(n) + O(n-1) + T(n-2) = O(n) + O(n-1) + O(n-2) + ... O(1) 
+    // T(n) = = O(n^2) => O(n) + T(n-1) = O(n) + O(n-1) + T(n-2) = O(n) + O(n-1) + O(n-2) + ... O(1) 
     twoSum_DecreaseConquer(nums, target) {
         for (let i=0; i< nums.length; i++) {
 
@@ -102,6 +102,76 @@ class TwoSum_Sorted {
 }
 const tss = new TwoSum_Sorted();
 console.log('Two Sum Presort + Two Pointer Pass return indices', tss.twoSum_TwoPointerPass([2, 7, 11, 15], 9));
+
+// Leetcode #15 Medium - 3 Sum
+// Given an integer array, nums, return all triplets numbers add up to zero.
+// 
+// Ex: [-1, 0, 1, 2, -1, -4], output: [[-1, -1, 2], [-1, 0, 1]]
+// Ex: [0, 1, 1], output: [], Ex: [0, 0, 0], output: [[0,0,0]]
+class ThreeSum {
+    constructor() {}
+
+    threesum(nums) {
+        nums.sort((a, b)=>a-b);     // [-4, -1, -1, 0, 1, 2]
+        let result=[];
+        // T(n)= O(n log n), S(n)=O(1), in-place
+        for (let i=0; i< nums.length; i++) {
+            let smaller=i+1, larger=nums.length-1;
+            while (smaller < larger) {
+                if (nums[smaller]+nums[larger]===-nums[i]) {
+                    result.push( [nums[i], nums[smaller], nums[larger]]);
+                    smaller++; larger--;
+
+                    while (smaller < larger && nums[smaller]===nums[smaller+1]) smaller++;  // Eliminate Redundancy
+                    while (smaller < larger && nums[larger] === nums[larger--]) larger--;
+                } else if (nums[smaller]+nums[larger] < -nums[i]) smaller++;
+                else larger--;
+            }
+        }
+        return result;
+    }
+}
+const tsum = new ThreeSum();
+console.log('Three Sum equals to zero', tsum.threesum([-1, 0, 1, 2, -1, -4]));
+console.log('Three Sum equals to zero', tsum.threesum([0, 1, 1]));
+console.log('Three Sum equals to zero', tsum.threesum([0, 0, 0]));
+
+// Leetcode #349 Medium - Sort Colors
+// Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects 
+// of the same color are adjacent, with the colors in the order red, white, and blue.
+// We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+//
+// Ex: [2,0,2,1,1,0], output: [0,0,1,1,2,2]; Ex: [2, 0, 1], output: [0, 1, 2]
+//
+class DutchNationalFlag {
+    constructor() {}
+
+    sortcolors(nums) {
+        let i=0, low=0, hi=nums.length-1;
+        while (i <= hi) {
+            if (nums[i]===2) {                  // if nums[i]===B, swap with hi
+                this.swap(nums, i, hi);
+                hi--;
+            }
+            else if (nums[i]===1) i++;          // if nums[i]===W, increment i
+            else if (nums[i]===0) {             // if nums[i]===R, swap with low
+                this.swap(nums, i, low);
+                low++;
+                i++;
+            } 
+        }
+        return nums;
+    }
+    swap(nums, x, y) {
+        let temp=nums[x];
+        nums[x]=nums[y];
+        nums[y]=temp;
+    }
+}
+const dnf = new DutchNationalFlag();
+console.log("Dutch National Flag", dnf.sortcolors([2,0,2,1,1,0]));
+console.log("Dutch National Flag", dnf.sortcolors([2,0,1]));
+
 
 // Leetcode #349 Easy - Intersedtion of 2 Arrays 
 // Given two arrays, write a function compute the intersection.
