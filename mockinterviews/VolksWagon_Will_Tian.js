@@ -25,7 +25,7 @@ function notepassing(classroom) {
     table[0][0] = Infinity, table[0][1] = 0.9, table[1][0]=0.5;
     for (let r=1; r< rowsize; r++) {
         for (let c=1; c<colsize; c++) {
-            table[r][c] = table[r-1][c] * 0.5;
+            table[r][c] = Math.max(table[r-1][c], table[r][c-1]) * 0.5;
         }
     }
     return table[rowsize-1][colsize-1];
