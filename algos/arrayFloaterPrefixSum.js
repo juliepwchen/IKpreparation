@@ -214,6 +214,9 @@ class MaxSizeSubarray {
             prefixsum += nums[i];
             if (hmap[prefixsum-k] !== undefined) max = Math.max(max, (i+1)-hmap[prefixsum-k]);
 
+            // NOTE: only store the smallest prefix length by checking hmap[prefixsum]
+            // if hmap[prefixsum] already exist, no need to store new value, because new length, i, will be > previous value.
+            // because i loops from 0...n-1, in increasing order
             if (hmap[prefixsum]===undefined) hmap[prefixsum]=i+1;
         }
         return max;
@@ -265,19 +268,31 @@ class MaxSizeContinugousSubarray {
     constructor() {}
 
     maxContiguousBinary(nums) {
+        // 1) if overall array has unequal # of 0 & 1 - extra 5 1's,
+        // => if we make suffix with equal 0 & 1's, prefix is imbalance & has an extra 5 1's.
+        // 2) max length of suffix with equal 0 & 1's
+        // => minimize prefix length with unequal 0 or 1's 
+        // => find smallest length prefix with imbalance excess # of 0 or 1
         let hmap={ 0:0 }, prefixexcess=0, max=0;
         for (let i=0; i< nums.length; i++) {
+            // local compute <= compute from old prefixexcess into new prefixexcess
             if (nums[i]===1) prefixexcess++;
             else prefixexcess--;
-            if (hmap[prefixexcess] !== undefined) max = Math.max(max, (i+1)-hmap[prefixexcess]);
 
-            if (hmap[prefixexcess]===undefined) hmap[prefixexcess] = i+1;
+            // global answer <= look up in old hmap returned from subordinate
+            if (hmap[prefixexcess] !== undefined) max = Math.max(max, (i+1)-hmap[prefixexcess]);  
+
+            // return to boss <= new hmap with new prefixexcess
+            // NOTE: only store the smallest prefix length by checking hmap[prefixexcess]
+            // if hmap[prefixexcess] already exist, no need to store new value, because new length, i, will be > previous value.
+            // because i loops from 0...n-1, in increasing order
+            if (hmap[prefixexcess]===undefined) hmap[prefixexcess] = i+1;                       
         }
         return max;
     }
 }
 const mscs = new MaxSizeContinugousSubarray();
-console.log('Longest Length of Subarray with Equal 0 and 1 = ', mscs.maxContiguousBinary([0, 1, 0]));
+console.log('Longest Length of Subarray with Equal 0 and 1 = ', mscs.maxContiguousBinary([0, 1, 0, 1, 1]));
 console.log('Longest Length of Subarray with Equal 0 and 1 = ', mscs.maxContiguousBinary([0, 1]));
 
 // Leetcode #523 Medium - Contiguous SubArray Sum

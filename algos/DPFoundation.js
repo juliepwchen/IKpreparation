@@ -158,8 +158,9 @@ class CountUniquePaths {
         // recursive case
         for (let row=1; row < m; row++) {                    // row by row, top to bottom
             for (let col=1; col<n; col++) {                  // each row, left to right
-                table[row][col]=table[row-1][col]+table[row][col-1];  //(1,1)= (0,1)+ (1,0)
-            }
+                table[row][col]=table[row-1][col]+table[row][col-1];  // (1,1) = (0, 1) + (1, 0)
+                                                                      // (0,0)(0,1)
+            }                                                         // (1,0)(1,1)
         }
         return table[m-1][n-1];
     }
@@ -177,14 +178,14 @@ console.log('Count Unique Paths from top-left to bottom-right in a 2D table', cu
 class MaximumPathSum {
     dp(grid) {
         let m=grid.length, n=grid[0].length;
-        let table=Array.from({length:m}, ()=>Array.from({length:n}, ()=>0));
+        let table = Array(m).fill().map(()=>Array(n.length).fill(0));
         //base case = points from left + points in my own cell or points from top + points in my own cell
         table[0][0]=grid[0][0];
         for (let col=1; col<m; col++) table[0][col]=table[0][col-1]+grid[0][col];       // fill all columns in row 0 
         for (let row=1; row<n; row++) table[row][0] = table[row-1][0] + grid[row][0];   // fill all cells in column 0
         // recrusive case
         for (let row=1; row < m; row++) {
-            for (let col=1; col<n; col++) {         // table[i][j] stores values of Maximum Path from (0,0) to (i, j)
+            for (let col=1; col<n; col++) {         // table[i][j] stores values of Maximum Sum Path from (0,0) to (i, j)
                 table[row][col]= Math.max(table[row-1][col], table[row][col-1]) + grid[row][col]; 
             }
         }
