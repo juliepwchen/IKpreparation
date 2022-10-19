@@ -13,9 +13,9 @@ As of 09/30/2022, I have also added /mockinterviews folder where I upload questi
 
 ## Total LC problem count
 
-(10/09/22) => 80
+(10/09/22) => 82
 - Easy: 3+2+1+1+5+5 (09/09/22) +2 (09/30) + 3 (10/09)
-- Medium: 2+5+8+10+1+1+13 (09/09/22) + 7 (09/30) + 4 (10/09)
+- Medium: 2+2+5+8+10+1+1+13 (09/09/22) + 7 (09/30) + 4 (10/09)
 - Hard: 2+1+1+1+1 (09/09/22) + 1 (10/09)
 
 ## Installation
