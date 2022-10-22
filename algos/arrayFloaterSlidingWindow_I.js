@@ -190,7 +190,7 @@ console.log("Max number of vowels in substring of length k", mv.maxVowels( "tryh
 // 
 // Ex: "havefunonleetcode", k=5, output: 6
 // Ex: "home", k=5, output: 0
-class NoRepeated {
+class NoRepeatedVowels {
     constructor() {}
 
     countNoRepeats(s, k) {
@@ -208,16 +208,16 @@ class NoRepeated {
             // my subordinate gives me a hmap with frequencies of chars
             if (hmap[s[i]]) hmap[s[i]]++;
             else hmap[s[i]]=1;
-            
+
             hmap[s[i-k]]--;
             if (hmap[s[i-k]] ===0) delete hmap[s[i-k]];
-            
+
             if (Object.keys(hmap).length ===k) count++;   
         }
         return count;
     }
 }
-const nr = new NoRepeated();
+const nr = new NoRepeatedVowels();
 console.log('Number of Substring of Length K with No Repeated Chars', nr.countNoRepeats("havefunonleetcode", 5));
 console.log('Number of Substring of Length K with No Repeated Chars', nr.countNoRepeats("home", 5));
 

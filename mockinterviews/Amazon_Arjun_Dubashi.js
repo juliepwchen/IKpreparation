@@ -12,9 +12,10 @@ class Anagrams {
         this.hmap = {};
     }
     // hmap = { sorted_key: array_of_words_matching_all_letters }
-    buckets(words) {
+    // T(n) = n words * O(m log m) = O( max(n, m) );
+    buckets(words) {                                                
         for (let i=0; i< words.length; i++) {
-            let sorted_key = [...words[i].split('').sort()];
+            let sorted_key = [...words[i].split('').sort()];        // T(n)=O(m log m) Quicksort, m: eaach word length
             if (this.hmap[sorted_key] !== undefined) this.hmap[sorted_key].push(words[i]);
             else this.hmap[sorted_key] = [words[i]];
         }
