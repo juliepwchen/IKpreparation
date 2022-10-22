@@ -165,9 +165,49 @@ console.log('Subarray Product Less Than K', sp.conuntsubsproduct([10, 5, 2, 6], 
 // x to exactly 0. If not possible, return -1.
 // Ex: nums: [1, 1, 4, 2, 3], x=5, output: 2, Ex: nums: [5, 6, 7, 8, 9], x=4, output: -1
 // Ex: nums: [3, 2, 20, 1, 1, 3], x=10, output: 5
+class MinOpsReduceZero {
+    constructor() {}
+    minops(nums, X) {
+        let windowsum=0, globalmax=-1, left=0;
+        let k = nums.reduce((num, sum)=> sum += num, 0) - X;
+        for (let i=0; i< nums.length; i++) {
+            // Work TBD to solve the subproblem ending at index i
+            windowsum += nums[i];
+            while (left <= i && windowsum > k) {
+                windowsum -= nums[left];
+                left++;
+            }
+            if (windowsum === k) globalmax = Math.max(globalmax, i-left + 1);
+        }
+        return (globalmax===-1) ? -1 : nums.length - globalmax;
+    }
+}
+const morz = new MinOpsReduceZero();
+console.log('Minimum Ops to Reduce X to Zero', morz.minops([1, 1, 4, 2, 3], 5))
+console.log('Minimum Ops to Reduce X to Zero', morz.minops([5, 6, 7, 8, 9], 4))
+console.log('Minimum Ops to Reduce X to Zero', morz.minops([3, 2, 20, 1, 1, 3], 10))
 
 // Leetcode #1004 Medium - Maximum Consecutive Ones III
 // Given an array of A of 0s and 1s, we may change up to K values of 0 to 1.
 // Return the length of longest contiguous subarray containing 1s.
 // Ex: A: [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], K=2, output: 6, starting at index 5
 // Ex: A: [0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1], K=3, output: 10, starting at index 2
+class MaxConsecutiveOnes {
+    constructor() {}
+    maxones(A, K) {
+        let windowzeros=0, globalmax=0, left=0;
+        for (let i=0; i< A.length; i++) {
+            // Work TBD to solve local problem ending at index i, include A[i] into the window
+            if (A[i] === 0) windowzeros++;
+            while (left <= i && windowzeros > K) {
+                if (A[left]===0) windowzeros--;
+                left++;
+            }
+            if ((i-left+1) > globalmax) globalmax = i-left +1;
+        }
+        return globalmax;
+    }
+}
+const mco = new MaxConsecutiveOnes();
+console.log('Maximum Consecutive Ones changing up to K values', mco.maxones([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2))
+console.log('Maximum Consecutive Ones changing up to K values', mco.maxones([0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1], 3))
